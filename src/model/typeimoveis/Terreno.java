@@ -3,8 +3,11 @@ package model.typeimoveis;
 import model.Financiamento;
 
 public class Terreno extends Financiamento {
-    public Terreno(double valorImovel, int prazoFinanciamentoAnos, double taxaJurosAnual) {
+    private String tipoImovel; 
+
+    public Terreno(double valorImovel, int prazoFinanciamentoAnos, double taxaJurosAnual, String tipoImovel) {
         super(valorImovel, prazoFinanciamentoAnos, taxaJurosAnual);
+        this.tipoImovel = tipoImovel;
     }
 
     @Override
