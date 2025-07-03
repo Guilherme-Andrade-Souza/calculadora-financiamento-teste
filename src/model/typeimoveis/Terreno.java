@@ -12,8 +12,12 @@ public class Terreno extends Financiamento {
 
     @Override
     public double getTaxaJurosAnual(){
-        double novaTaxaJuros = getTaxaJurosAnual() + 0.02;
+        double novaTaxaJuros = super.getTaxaJurosAnual() + 0.02;
         
         return novaTaxaJuros; 
+    }
+
+    public String getTipoImovel(){
+        return tipoImovel;
     }
 }

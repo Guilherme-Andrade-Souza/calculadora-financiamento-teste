@@ -18,4 +18,11 @@ public class Casa extends Financiamento{
         return super.pagamentoMensal() + VALOR_SEGURO_OBRIGATORIO;
     }
 
+    public double getTamanhoAreaConstruida(){
+        return tamanhoAreaConstruida;
+    }
+
+    public double getTamanhoTerreno(){
+        return tamanhoTerreno;
+    }
 }

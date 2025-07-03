@@ -32,9 +32,13 @@ public class Main {
     
         // Solicita e lê a taxa de juros anual
         double taxaJuros = interfaceUsuario.taxaJurosAnual();
+
+        double tamanhoAreaConstruida = interfaceUsuario.tamanhoAreaConstruida();
+
+        double tamanhoTerreno = interfaceUsuario.tamanhoTerreno();
         
         // Cria o financiamento com os dados lidos
-        Financiamento financiamento = new Casa(valorImovel, anosFinanciamento, taxaJuros);
+        Financiamento financiamento = new Casa(valorImovel, anosFinanciamento, taxaJuros, tamanhoAreaConstruida, tamanhoTerreno);
         
         // Calcula o pagamento mensal e total com base nos métodos da classe
         double pagamentoMensal = financiamento.pagamentoMensal();
@@ -42,10 +46,10 @@ public class Main {
         
         // Adiciona o financiamento à lista
         listaFinanciamentos.add(financiamento);
-        listaFinanciamentos.add(new Casa(50000.00, 20, 0.02));
-        listaFinanciamentos.add(new Apartamento(400600.00, 25, 0.06));
-        listaFinanciamentos.add(new Apartamento(900000.00, 15, 0.08));
-        listaFinanciamentos.add(new Terreno(100000.00, 10, 0.02));
+        listaFinanciamentos.add(new Casa(50000.00, 20, 0.02, 32.53, 100.00));
+        listaFinanciamentos.add(new Apartamento(400600.00, 25, 0.06, 30, 3));
+        listaFinanciamentos.add(new Apartamento(900000.00, 15, 0.08, 5, 10));
+        listaFinanciamentos.add(new Terreno(100000.00, 10, 0.02, "comercial"));
 
         // Exibe os resultados do financiamento atual
         System.out.printf("\nO pagamento mensal é de: R$ %.2f%n", pagamentoMensal);

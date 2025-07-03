@@ -59,4 +59,20 @@ public class InterfaceUsuario {
             }
         }
     }
+
+    public double tamanhoAreaConstruida(){
+        System.out.print("Insira a area do terreno construido: ");
+        
+        double tamanhoAreaConstruida = scanner.nextDouble();
+
+        return tamanhoAreaConstruida;
+    }
+
+    public double tamanhoTerreno(){
+        System.out.print("Insira o tamanho do terreno");
+
+        double tamanhoTerreno = scanner.nextDouble();
+
+        return tamanhoTerreno;
+    }
 }

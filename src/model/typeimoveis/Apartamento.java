@@ -21,4 +21,12 @@ public class Apartamento extends Financiamento{
         
         return (getValorImovel() * fator) / fator - 1;
     }
+
+    public int getQuantidadeVagasGaragem(){
+        return quantidadeVagasGaragem;
+    }
+
+    public int getAndarApartamento(){
+        return andarApartamento;
+    }
 }
