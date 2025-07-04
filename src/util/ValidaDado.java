@@ -13,7 +13,7 @@ public class ValidaDado {
     }
 
     // Valida se o prazo do financiamento (em anos) está dentro do limite aceitável
-    public boolean validaTempoFinancimento(int prazoFinanciamentoAnos){
+    public boolean validaTempoFinanciamento(int prazoFinanciamentoAnos){
         // Aceita apenas prazos entre 1 e 40 anos (inclusive)
         if (prazoFinanciamentoAnos > 0 && prazoFinanciamentoAnos <= 40) {
             return true;
