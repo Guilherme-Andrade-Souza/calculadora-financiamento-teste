@@ -9,6 +9,10 @@ import model.typeimoveis.Casa;
 import model.typeimoveis.Terreno;
 import util.InterfaceUsuario;       // Importa a classe que lida com entrada e validação dos dados
 
+//TODO adicionar os atributos expecificos das classes apartamento e terreno
+//TODO implementar no main para quando ser perguntando o tipo do financiamento
+//TODO adicionar serializarção
+
 public class Main {
     public static void main(String[] args) {
         // Cria uma lista para armazenar todos os financiamentos registrados
@@ -24,6 +28,9 @@ public class Main {
         double valorTotalImoveis = 0;
         double valorTotalPagamento = 0;
 
+
+        //---------------------------------------------------------------------------------------------
+
         // Solicita e lê o valor do imóvel
         double valorImovel = interfaceUsuario.valorImovel();
         
@@ -33,27 +40,26 @@ public class Main {
         // Solicita e lê a taxa de juros anual
         double taxaJuros = interfaceUsuario.taxaJurosAnual();
 
-        double tamanhoAreaConstruida = interfaceUsuario.tamanhoAreaConstruida();
+        System.out.println("\n1 - Apartamento");
+        System.out.println("2 - Casa");
+        System.out.println("3 - Terreno");
+        System.out.print("Qual tipo de financiamento você deseja:");
+        int opc = scanner.nextInt();        
 
-        double tamanhoTerreno = interfaceUsuario.tamanhoTerreno();
+        switch (opc) {
+            case 1:
+                
+                break;
         
-        // Cria o financiamento com os dados lidos
-        Financiamento financiamento = new Casa(valorImovel, anosFinanciamento, taxaJuros, tamanhoAreaConstruida, tamanhoTerreno);
-        
-        // Calcula o pagamento mensal e total com base nos métodos da classe
-        double pagamentoMensal = financiamento.pagamentoMensal();
-        double pagamentoTotal = financiamento.pagamentoTotal();
-        
-        // Adiciona o financiamento à lista
-        listaFinanciamentos.add(financiamento);
-        listaFinanciamentos.add(new Casa(50000.00, 20, 0.02, 32.53, 100.00));
-        listaFinanciamentos.add(new Apartamento(400600.00, 25, 0.06, 30, 3));
-        listaFinanciamentos.add(new Apartamento(900000.00, 15, 0.08, 5, 10));
-        listaFinanciamentos.add(new Terreno(100000.00, 10, 0.02, "comercial"));
+            default:
+                break;
+        }
+
+        //----------------------------------------------------------------------------------------
 
         // Exibe os resultados do financiamento atual
-        System.out.printf("\nO pagamento mensal é de: R$ %.2f%n", pagamentoMensal);
-        System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n", pagamentoTotal);
+        System.out.printf("\nO pagamento mensal é de: R$ %.2f%n");
+        System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n");
 
         // Acumula os totais de valor dos imóveis e dos pagamentos
         for (Financiamento f : listaFinanciamentos) {

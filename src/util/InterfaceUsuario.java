@@ -81,6 +81,16 @@ public class InterfaceUsuario {
         }
     }
 
+    public int quantidadeVagasGaragem(){
+        
+    }
+
+    public int andarApartamento(){
+
+    }
+
+
+
     // Método que solicita e valida a área construída do imóvel
     public double tamanhoAreaConstruida() {
         while (true) {
@@ -120,4 +130,9 @@ public class InterfaceUsuario {
             }
         }
     }
+
+    public String tipoImovel(){
+
+    }
+
 }
