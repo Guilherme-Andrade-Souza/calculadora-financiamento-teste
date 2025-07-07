@@ -9,6 +9,7 @@ import model.typeimoveis.Casa;
 import model.typeimoveis.Terreno;
 import util.InterfaceUsuario;       // Importa a classe que lida com entrada e validação dos dados
 
+//TODO execessão taxa casa
 //TODO implementar no main para quando ser perguntando o tipo do financiamento
 //TODO adicionar serializarção
 
@@ -27,8 +28,8 @@ public class Main {
         double valorTotalImoveis = 0;
         double valorTotalPagamento = 0;
 
-
-        //---------------------------------------------------------------------------------------------
+        double pagamentoMensal;
+        double pagamentoTotal;
 
         char opcfin;
         do {
@@ -52,18 +53,45 @@ public class Main {
                     int quantidadeVagasGaragem = interfaceUsuario.quantidadeVagasGaragem();
                     int andarApartamento = interfaceUsuario.andarApartamento();
 
-                    listaFinanciamentos.add(new Apartamento(valorImovel, prazoAnosFinanciamento, taxaJuros, quantidadeVagasGaragem, andarApartamento));
+                    Financiamento financiamentoApartamento = new Apartamento(valorImovel, prazoAnosFinanciamento, taxaJuros, quantidadeVagasGaragem, andarApartamento);
+
+                    listaFinanciamentos.add(financiamentoApartamento);
+
+                    pagamentoMensal = financiamentoApartamento.pagamentoMensal();
+                    pagamentoTotal = financiamentoApartamento.pagamentoTotal();
+
+                    // Exibe os resultados do financiamento atual
+                    System.out.printf("\nO pagamento mensal é de: R$ %.2f%n", pagamentoMensal);
+                    System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n", pagamentoTotal);
                     break;
                 case 2:
                     double tamanhoAreaConstruida = interfaceUsuario.tamanhoAreaConstruida();
                     double tamanhoTerreno = interfaceUsuario.tamanhoTerreno();
 
-                    listaFinanciamentos.add(new Casa(valorImovel, prazoAnosFinanciamento, taxaJuros, tamanhoAreaConstruida, tamanhoTerreno));
+                    Financiamento financiamentoCasa = new Casa(valorImovel, prazoAnosFinanciamento, taxaJuros, tamanhoAreaConstruida, tamanhoTerreno);
+                    
+                    listaFinanciamentos.add(financiamentoCasa);
+
+                    pagamentoMensal = financiamentoCasa.pagamentoMensal();
+                    pagamentoTotal = financiamentoCasa.pagamentoTotal();
+
+                    // Exibe os resultados do financiamento atual
+                    System.out.printf("\nO pagamento mensal é de: R$ %.2f%n", pagamentoMensal);
+                    System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n", pagamentoTotal);
                     break;
                 case 3:
                     String zonaTerreno = interfaceUsuario.zonaTerreno();
 
-                    listaFinanciamentos.add(new Terreno(valorImovel, prazoAnosFinanciamento, taxaJuros, zonaTerreno));
+                    Financiamento financiamentoTerreno = new Terreno(valorImovel, prazoAnosFinanciamento, taxaJuros, zonaTerreno);
+
+                    listaFinanciamentos.add(financiamentoTerreno);
+
+                    pagamentoMensal = financiamentoTerreno.pagamentoMensal();
+                    pagamentoTotal = financiamentoTerreno.pagamentoTotal();
+
+                    // Exibe os resultados do financiamento atual
+                    System.out.printf("\nO pagamento mensal é de: R$ %.2f%n", pagamentoMensal);
+                    System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n", pagamentoTotal);
                     break;
                 default:
                     break;
@@ -84,13 +112,6 @@ public class Main {
                 }
             }
         } while (opcfin == 's');
-
-
-        //----------------------------------------------------------------------------------------
-
-        // Exibe os resultados do financiamento atual
-        System.out.printf("\nO pagamento mensal é de: R$ %.2f%n");
-        System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n");
 
         // Acumula os totais de valor dos imóveis e dos pagamentos
         for (Financiamento f : listaFinanciamentos) {
