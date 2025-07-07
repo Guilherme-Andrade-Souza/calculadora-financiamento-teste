@@ -1,2 +1,3 @@
-Valor do Imóvel: R$523523523,00 | Pagamento Total: R$524405662,21
-
+9812689,00;0,30;2;vagas=23;andar=30
+1211511615,00;0,02;20;area_construida=1232,00 m2;tamanho_terreno=.2f m2
+15155115616,00;0,32;12;zona_terreno=industrial

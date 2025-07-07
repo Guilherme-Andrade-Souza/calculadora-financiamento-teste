@@ -1,51 +1,61 @@
-package model; // Define que esta classe está no pacote "model"
+package model; // Indica que a classe pertence ao pacote "model"
 
-import java.io.Serializable;
+import java.io.Serializable; // Permite que objetos dessa classe sejam serializados
 
+// Classe abstrata base para diferentes tipos de financiamento (Casa, Apartamento, Terreno, etc.)
 public abstract class Financiamento implements Serializable {
-    // Atributos privados que representam os dados essenciais de um financiamento
-    private double valorImovel;              // Valor total do imóvel
-    private int prazoFinanciamentoAnos;      // Prazo de financiamento em anos
-    private double taxaJurosAnual;           // Taxa de juros anual (em decimal, ex: 0.1 para 10%)
 
-    // Construtor da classe que inicializa os atributos
-    public Financiamento(double valorImovel, int prazoFinanciamentoAnos, double taxaJurosAnual){
+    // Atributos principais de qualquer financiamento
+    private double valorImovel;              // Valor do imóvel
+    private int prazoFinanciamentoAnos;      // Prazo do financiamento em anos
+    private double taxaJurosAnual;           // Taxa de juros anual (em percentual, ex: 0.1 = 10%)
+
+    // Construtor que inicializa os atributos básicos
+    public Financiamento(double valorImovel, int prazoFinanciamentoAnos, double taxaJurosAnual) {
         this.valorImovel = valorImovel;
         this.prazoFinanciamentoAnos = prazoFinanciamentoAnos;
-        this.taxaJurosAnual = taxaJurosAnual; 
+        this.taxaJurosAnual = taxaJurosAnual;
     }
 
-    // Métodos getters para acessar os atributos privados
-    public double getValorImovel(){
+    // Getters para acesso aos atributos encapsulados
+    public double getValorImovel() {
         return valorImovel;
     }
 
-    public int getPrazoFinanciamentoAnos(){
+    public int getPrazoFinanciamentoAnos() {
         return prazoFinanciamentoAnos;
     }
 
-    public double getTaxaJurosAnual(){
+    public double getTaxaJurosAnual() {
         return taxaJurosAnual;
     }
 
-    // Calcula o valor do pagamento mensal
-    public double pagamentoMensal(){
-        // Fórmula simplificada: valor da parcela base vezes acréscimo de juros mensal
-        // Exemplo: (valor / número total de parcelas) * (1 + juros mensal)
-        return (valorImovel / (prazoFinanciamentoAnos * 12)) * (1 + (taxaJurosAnual / 12));
+    /**
+     * Calcula o valor da parcela mensal do financiamento.
+     * Fórmula usada: (valor total / total de meses) * (1 + juros mensal)
+     * Nota: Esta é uma fórmula simplificada, não utiliza o sistema de amortização PRICE.
+     */
+    public double pagamentoMensal() {
+        double jurosMensal = taxaJurosAnual / 12;
+        int totalMeses = prazoFinanciamentoAnos * 12;
+        return (valorImovel / totalMeses) * (1 + jurosMensal);
     }
 
-    // Calcula o valor total pago ao final do financiamento
-    public double pagamentoTotal(){
-        // Multiplica o valor da parcela pelo total de meses
+    /**
+     * Calcula o valor total a ser pago durante todo o financiamento.
+     * Multiplica o valor da parcela mensal pela quantidade de meses.
+     */
+    public double pagamentoTotal() {
         return pagamentoMensal() * (prazoFinanciamentoAnos * 12);
     }
 
-    // Representação textual do objeto Financiamento
+    /**
+     * Retorna uma string com informações básicas do financiamento.
+     * Pode ser sobrescrito por subclasses para incluir detalhes específicos.
+     */
     @Override
     public String toString() {
-        // Formata a saída com duas casas decimais
         return String.format("Valor do Imóvel: R$%.2f | Pagamento Total: R$%.2f%n",
-            valorImovel, pagamentoTotal());
+                valorImovel, pagamentoTotal());
     }
 }
