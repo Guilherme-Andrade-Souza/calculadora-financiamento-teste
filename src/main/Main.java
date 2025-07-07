@@ -9,7 +9,6 @@ import model.typeimoveis.Casa;
 import model.typeimoveis.Terreno;
 import util.InterfaceUsuario;       // Importa a classe que lida com entrada e validação dos dados
 
-//TODO adicionar os atributos expecificos das classes apartamento e terreno
 //TODO implementar no main para quando ser perguntando o tipo do financiamento
 //TODO adicionar serializarção
 
@@ -31,29 +30,61 @@ public class Main {
 
         //---------------------------------------------------------------------------------------------
 
-        // Solicita e lê o valor do imóvel
-        double valorImovel = interfaceUsuario.valorImovel();
+        char opcfin;
+        do {
+            // Solicita e lê o valor do imóvel
+            double valorImovel = interfaceUsuario.valorImovel();
+            
+            // Solicita e lê o prazo do financiamento (em anos)
+            int prazoAnosFinanciamento = interfaceUsuario.prazoFinanciamentoAnos();
         
-        // Solicita e lê o prazo do financiamento (em anos)
-        int anosFinanciamento = interfaceUsuario.prazoFinanciamentoAnos();
+            // Solicita e lê a taxa de juros anual
+            double taxaJuros = interfaceUsuario.taxaJurosAnual();
     
-        // Solicita e lê a taxa de juros anual
-        double taxaJuros = interfaceUsuario.taxaJurosAnual();
+            System.out.println("\n1 - Apartamento");
+            System.out.println("2 - Casa");
+            System.out.println("3 - Terreno");
+            System.out.print("Qual tipo de financiamento você deseja: ");
+            int opc = scanner.nextInt();        
+    
+            switch (opc) {
+                case 1:
+                    int quantidadeVagasGaragem = interfaceUsuario.quantidadeVagasGaragem();
+                    int andarApartamento = interfaceUsuario.andarApartamento();
 
-        System.out.println("\n1 - Apartamento");
-        System.out.println("2 - Casa");
-        System.out.println("3 - Terreno");
-        System.out.print("Qual tipo de financiamento você deseja:");
-        int opc = scanner.nextInt();        
+                    listaFinanciamentos.add(new Apartamento(valorImovel, prazoAnosFinanciamento, taxaJuros, quantidadeVagasGaragem, andarApartamento));
+                    break;
+                case 2:
+                    double tamanhoAreaConstruida = interfaceUsuario.tamanhoAreaConstruida();
+                    double tamanhoTerreno = interfaceUsuario.tamanhoTerreno();
 
-        switch (opc) {
-            case 1:
-                
-                break;
-        
-            default:
-                break;
-        }
+                    listaFinanciamentos.add(new Casa(valorImovel, prazoAnosFinanciamento, taxaJuros, tamanhoAreaConstruida, tamanhoTerreno));
+                    break;
+                case 3:
+                    String zonaTerreno = interfaceUsuario.zonaTerreno();
+
+                    listaFinanciamentos.add(new Terreno(valorImovel, prazoAnosFinanciamento, taxaJuros, zonaTerreno));
+                    break;
+                default:
+                    break;
+            }
+
+            while(true){
+                System.out.print("Deseja simular mais algum financiamento(s/n)?");
+                String entrada = scanner.nextLine().trim().toLowerCase();
+
+                if (entrada.equals("s") || entrada.equals("S")) {
+                    opcfin = 's';
+                    break;
+                } else if (entrada.equals("n") || entrada.equals("N")) {
+                    opcfin = 'n';
+                    break;
+                } else {
+                    System.out.println("Entrada inválida. Digite apenas 's' para sim ou 'n' para não.");
+                }
+            }
+        } while (opcfin == 's');
+
 
         //----------------------------------------------------------------------------------------
 

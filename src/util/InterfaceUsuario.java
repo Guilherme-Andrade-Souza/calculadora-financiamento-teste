@@ -82,11 +82,38 @@ public class InterfaceUsuario {
     }
 
     public int quantidadeVagasGaragem(){
-        
+
+        while (true) {
+            System.out.print("\nInsira a quantidade de vagas disponíveis: ");
+            int vagas = scanner.nextInt();
+
+            try {
+                if (vagas >= 0) {
+                    return vagas;
+                } else {
+                    System.out.println("Quantidade inválida. O valor deve ser zero ou positivo.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Digite um número inteiro, por exemplo: 1, 2, 3...");
+            }
+        }       
     }
 
     public int andarApartamento(){
+        while (true) {
+            System.out.print("\nInsira o andar do apartamento: ");
+            int andar = scanner.nextInt();
 
+            try {
+                if (andar >= 0) {
+                    return andar;
+                } else {
+                    System.out.println("Andar inválido. O valor deve ser zero ou positivo.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Digite um número inteiro, por exemplo: 0, 1, 2...");
+            }
+    }
     }
 
 
@@ -131,8 +158,26 @@ public class InterfaceUsuario {
         }
     }
 
-    public String tipoImovel(){
+    public String zonaTerreno() {
+        while (true) {
+            try {
+                System.out.print("\nInforme o tipo da zona do terreno (residencial, comercial, industrial ou mista): ");
+                String entrada = scanner.nextLine().trim().toLowerCase();
 
+                switch (entrada) {
+                    case "residencial":
+                    case "comercial":
+                    case "industrial":
+                    case "mista":
+                        return entrada;
+
+                    default:
+                        System.out.println("Tipo inválido. Digite uma das opções válidas: residencial, comercial, industrial ou mista.");
+                }
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro ao ler a entrada. Tente novamente.");
+            }
+        }
     }
 
 }
