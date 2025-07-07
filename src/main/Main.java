@@ -1,121 +1,93 @@
-package main; // Define que a classe está no pacote "main"
+package main;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;   // Importa a classe ArrayList para armazenar uma lista de objetos
-import java.util.Scanner;     // Importa Scanner para entrada de dados via terminal
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-import model.Financiamento;         // Importa a classe Financiamento do pacote "model"
+import model.AumentoMaiorDoQueJurosException;
+import model.Financiamento;
 import model.typeimoveis.Apartamento;
 import model.typeimoveis.Casa;
 import model.typeimoveis.Terreno;
-import util.InterfaceUsuario;       // Importa a classe que lida com entrada e validação dos dados
+import util.InterfaceUsuario;
 
-//TODO adicionar serializarção
-//TODO corrigir erro seguro obrigatorio
-
+//Arrumar o bug to para tudo casa
+//Adicionar o toSring para cada sub classe
 
 public class Main {
     public static void main(String[] args) {
         final String ARQUIVO_TEXTO = "financiamentos.txt";
         final String ARQUIVO_SERIAL = "financiamentos.ser";
 
-        // Cria uma lista para armazenar todos os financiamentos registrados
         ArrayList<Financiamento> listaFinanciamentos = new ArrayList<>();
-
-        // Instancia a interface responsável por ler e validar os dados do usuário
         InterfaceUsuario interfaceUsuario = new InterfaceUsuario();
-
-        // Scanner usado para ler o "s/n" do usuário sobre novo financiamento
         Scanner scanner = new Scanner(System.in);
 
-        // Variáveis acumuladoras para os totais dos imóveis e dos pagamentos
         double valorTotalImoveis = 0;
         double valorTotalPagamento = 0;
 
         double pagamentoMensal;
         double pagamentoTotal;
 
-        char opcfin;
-        do {
-            // Solicita e lê o valor do imóvel
-            double valorImovel = interfaceUsuario.valorImovel();
-            
-            // Solicita e lê o prazo do financiamento (em anos)
-            int prazoAnosFinanciamento = interfaceUsuario.prazoFinanciamentoAnos();
         
-            // Solicita e lê a taxa de juros anual
-            double taxaJuros = interfaceUsuario.taxaJurosAnual();
-    
-            System.out.println("\n1 - Apartamento");
-            System.out.println("2 - Casa");
-            System.out.println("3 - Terreno");
-            System.out.print("Qual tipo de financiamento você deseja: ");
-            int opc = scanner.nextInt();        
-    
-            Financiamento financiamento = null;
-            switch (opc) {
-                case 1:
-                    int quantidadeVagasGaragem = interfaceUsuario.quantidadeVagasGaragem();
-                    int andarApartamento = interfaceUsuario.andarApartamento();
-
-                    financiamento = new Apartamento(valorImovel, prazoAnosFinanciamento, taxaJuros, quantidadeVagasGaragem, andarApartamento);
-
+        char opcfin = 0;
+        do {
+            try {
+                double valorImovel = interfaceUsuario.valorImovel();
+                int prazoAnosFinanciamento = interfaceUsuario.prazoFinanciamentoAnos();
+                double taxaJuros = interfaceUsuario.taxaJurosAnual();
+            
+                System.out.println("\n1 - Apartamento");
+                System.out.println("2 - Casa");
+                System.out.println("3 - Terreno");
+                System.out.print("Qual tipo de financiamento você deseja: ");
+                int opc = scanner.nextInt();
+                scanner.nextLine(); // consumir quebra de linha
+            
+                Financiamento financiamento = null;
+            
+                switch (opc) {
+                    case 1:
+                        int vagas = interfaceUsuario.quantidadeVagasGaragem();
+                        int andar = interfaceUsuario.andarApartamento();
+                        financiamento = new Apartamento(valorImovel, prazoAnosFinanciamento, taxaJuros, vagas, andar);
+                        break;
+                    case 2:
+                        double area = interfaceUsuario.tamanhoAreaConstruida();
+                        double terreno = interfaceUsuario.tamanhoTerreno();
+                        financiamento = new Casa(valorImovel, prazoAnosFinanciamento, taxaJuros, area, terreno);
+                        break;
+                        case 3:
+                        String zona = interfaceUsuario.zonaTerreno();
+                        financiamento = new Terreno(valorImovel, prazoAnosFinanciamento, taxaJuros, zona);
+                        break;
+                    default:
+                    System.out.println("Opção inválida.");
+                }
+                
+                if (financiamento != null) {
                     listaFinanciamentos.add(financiamento);
-
-                    pagamentoMensal = financiamento.pagamentoMensal();
-                    pagamentoTotal = financiamento.pagamentoTotal();
-
-                    // Exibe os resultados do financiamento atual
-                    System.out.printf("\nO pagamento mensal é de: R$ %.2f%n", pagamentoMensal);
-                    System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n", pagamentoTotal);
-                    break;
-                case 2:
-                    double tamanhoAreaConstruida = interfaceUsuario.tamanhoAreaConstruida();
-                    double tamanhoTerreno = interfaceUsuario.tamanhoTerreno();
-
-                    financiamento = new Casa(valorImovel, prazoAnosFinanciamento, taxaJuros, tamanhoAreaConstruida, tamanhoTerreno);
                     
-                    listaFinanciamentos.add(financiamento);
-
                     pagamentoMensal = financiamento.pagamentoMensal();
                     pagamentoTotal = financiamento.pagamentoTotal();
-
-                    // Exibe os resultados do financiamento atual
+                    
                     System.out.printf("\nO pagamento mensal é de: R$ %.2f%n", pagamentoMensal);
                     System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n", pagamentoTotal);
-                    break;
-                case 3:
-                    String zonaTerreno = interfaceUsuario.zonaTerreno();
-
-                    financiamento = new Terreno(valorImovel, prazoAnosFinanciamento, taxaJuros, zonaTerreno);
-
-                    listaFinanciamentos.add(financiamento);
-
-                    pagamentoMensal = financiamento.pagamentoMensal();
-                    pagamentoTotal = financiamento.pagamentoTotal();
-
-                    // Exibe os resultados do financiamento atual
-                    System.out.printf("\nO pagamento mensal é de: R$ %.2f%n", pagamentoMensal);
-                    System.out.printf("O pagamento total do financiamento é de: R$ %.2f%n", pagamentoTotal);
-                    break;
-                default:
-                    break;
+                }
+            
+            } catch (AumentoMaiorDoQueJurosException e) {
+                System.out.println("Erro: " + e.getMessage());
+                continue;
             }
-
-            while(true){
-                System.out.print("Deseja simular mais algum financiamento(s/n)?");
+            
+            while (true) {
+                System.out.print("Deseja simular mais algum financiamento(s/n)? ");
                 String entrada = scanner.nextLine().trim().toLowerCase();
 
-                if (entrada.equals("s") || entrada.equals("S")) {
+                if (entrada.equals("s")) {
                     opcfin = 's';
                     break;
-                } else if (entrada.equals("n") || entrada.equals("N")) {
+                } else if (entrada.equals("n")) {
                     opcfin = 'n';
                     break;
                 } else {
@@ -124,7 +96,7 @@ public class Main {
             }
         } while (opcfin == 's');
 
-        // Acumula os totais de valor dos imóveis e dos pagamentos
+        // Acumuladores
         for (Financiamento f : listaFinanciamentos) {
             valorTotalImoveis += f.getValorImovel();
             valorTotalPagamento += f.pagamentoTotal();
@@ -140,8 +112,16 @@ public class Main {
             e.printStackTrace();
         }
 
-        // --- 2. Lê e exibe o arquivo de texto ---
-        System.out.println("\n--- Lendo " + ARQUIVO_TEXTO + " ---");
+        // --- 2. Serializa o ArrayList ---
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARQUIVO_SERIAL))) {
+            oos.writeObject(listaFinanciamentos);
+            System.out.println("\nArrayList serializado em: " + ARQUIVO_SERIAL);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // --- 3. Lê e exibe o arquivo de texto ---
+        System.out.println("\nConteúdo de " + ARQUIVO_TEXTO + ":");
         try (BufferedReader br = new BufferedReader(new FileReader(ARQUIVO_TEXTO))) {
             String linha;
             while ((linha = br.readLine()) != null) {
@@ -151,31 +131,34 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.println("\n--- Lendo array serializado de " + ARQUIVO_SERIAL + " ---");
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ARQUIVO_SERIAL))) {
-            @SuppressWarnings("unchecked")
-            ArrayList<Financiamento> lida = (ArrayList<Financiamento>) ois.readObject();
-            int cont = 1;
-            for (Financiamento f : lida) {
-                System.out.printf("Financiamento %d – %s%n", cont++, f.toString());
+        // --- 4. Lê e exibe o arquivo serializado ---
+        File arquivoSerial = new File(ARQUIVO_SERIAL);
+        if (arquivoSerial.exists()) {
+            System.out.println("\nConteúdo serializado de " + ARQUIVO_SERIAL + ":");
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(arquivoSerial))) {
+                @SuppressWarnings("unchecked")
+                ArrayList<Financiamento> lida = (ArrayList<Financiamento>) ois.readObject();
+                int cont = 1;
+                for (Financiamento f : lida) {
+                    System.out.printf("Financiamento %d – %s%n", cont++, f.toString());
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } else {
+            System.err.println("\nArquivo serializado não encontrado.");
         }
-        
-        // Fecha o scanner após o uso
-        scanner.close();
 
-        // Exibe todos os financiamentos registrados
-        System.out.println("Lista de financiamentos:");
+        // Exibe todos os financiamentos registrados na sessão atual
+        System.out.println("\nLista de financiamentos cadastrados:");
         int contador = 1;
         for (Financiamento h : listaFinanciamentos) {
-            System.out.printf("Financiamento %d – %s%n", contador, h.toString());
-            contador++;
+            System.out.printf("Financiamento %d – %s%n", contador++, h.toString());
         }
 
-        // Exibe o total acumulado dos imóveis e do valor financiado
-        System.out.printf("Total de todos os imóveis: R$ %.2f | Total de todos financiamentos: R$ %.2f%n",
-            valorTotalImoveis, valorTotalPagamento);
-    }   
+        System.out.printf("\nTotal dos imóveis: R$ %.2f | Total dos financiamentos: R$ %.2f%n",
+                valorTotalImoveis, valorTotalPagamento);
+
+        scanner.close();
+    }
 }
