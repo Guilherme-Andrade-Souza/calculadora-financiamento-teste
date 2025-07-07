@@ -9,8 +9,6 @@ import model.typeimoveis.Casa;
 import model.typeimoveis.Terreno;
 import util.InterfaceUsuario;       // Importa a classe que lida com entrada e validação dos dados
 
-//TODO execessão taxa casa
-//TODO implementar no main para quando ser perguntando o tipo do financiamento
 //TODO adicionar serializarção
 
 public class Main {

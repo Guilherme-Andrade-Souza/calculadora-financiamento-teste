@@ -1,5 +1,6 @@
 package model.typeimoveis;
 
+import model.AumentoMaiorDoQueJurosException;
 import model.Financiamento;
 
 public class Casa extends Financiamento{
@@ -14,8 +15,18 @@ public class Casa extends Financiamento{
     }
 
     @Override
-    public double pagamentoMensal(){
-        return super.pagamentoMensal() + VALOR_SEGURO_OBRIGATORIO;
+    public double pagamentoMensal() {
+        double parcelaBase = super.pagamentoMensal();
+        double taxaJurosMensal = getTaxaJurosAnual() / 12 / 100;
+        double valorJuros = getValorImovel() * taxaJurosMensal;
+
+        if (VALOR_SEGURO_OBRIGATORIO > (valorJuros / 2)) {
+            throw new AumentoMaiorDoQueJurosException (
+                "O valor do seguro obrigatório (R$80,00) excede a metade dos juros mensais (" + (valorJuros / 2) + ")"
+            );
+        }
+
+        return parcelaBase + VALOR_SEGURO_OBRIGATORIO;
     }
 
     public double getTamanhoAreaConstruida(){

@@ -1,6 +1,8 @@
 package model; // Define que esta classe está no pacote "model"
 
-public abstract class Financiamento {
+import java.io.Serializable;
+
+public abstract class Financiamento implements Serializable {
     // Atributos privados que representam os dados essenciais de um financiamento
     private double valorImovel;              // Valor total do imóvel
     private int prazoFinanciamentoAnos;      // Prazo de financiamento em anos
